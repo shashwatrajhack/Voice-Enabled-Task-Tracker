@@ -46,33 +46,21 @@ Voice-Enabled-Task-Tracker/
 ```
 
 # 🛠 Tech Stack
-Frontend
+Frontend-->
+**React**
+**Vite**
+**Tailwind CSS**
+**Axios**
+**@hello-pangea/dnd (Drag & Drop)**
+**Web Speech API**
 
-React
-
-Vite
-
-Tailwind CSS
-
-Axios
-
-@hello-pangea/dnd (Drag & Drop)
-
-Web Speech API
-
-Backend
-
-Node.js
-
-Express
-
-MongoDB + Mongoose
-
-CORS
-
-chrono-node
-
-OpenAI API (optional)
+Backend-->
+**Node.js**
+**Express**
+**MongoDB + Mongoose**
+**CORS**
+**chrono-node**
+**OpenAI API (optional)**
 
 # ⚙️ Setup Instructions
 1. Prerequisites
