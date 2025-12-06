@@ -63,16 +63,12 @@ Backend-->
 **OpenAI API (optional)**
 
 # ⚙️ Setup Instructions
+```
 1. Prerequisites
-
 Node.js (v18 or above)
-
 NPM
-
 MongoDB locally OR MongoDB Atlas connection URI
-
 Optional: OpenAI API Key
-
 2. Clone the Repository
 git clone <your-repo-url>
 cd Voice-Enabled-Task-Tracker
@@ -114,6 +110,8 @@ npm run dev
 Frontend runs at:
 
 http://localhost:5173
+
+```
 
 
 # 🧩 Features
