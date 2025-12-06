@@ -1,0 +1,109 @@
+:root {
+  --bg: #f6f8fa;
+  --card: #fff;
+  --muted: #666;
+  --primary: #2563eb;
+}
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  margin: 0;
+  background: var(--bg);
+}
+.app {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 18px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.search {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e6e6e6;
+  width: 260px;
+}
+.button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  background: var(--primary);
+  color: white;
+}
+.board {
+  display: flex;
+  gap: 16px;
+  margin-top: 18px;
+}
+.column {
+  background: var(--card);
+  padding: 12px;
+  border-radius: 8px;
+  flex: 1;
+  min-height: 360px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+.col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.task-card {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background: #f9fafb;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+}
+.priority-Low {
+  border-left-color: #06b6d4;
+} /* teal */
+.priority-Medium {
+  border-left-color: #f59e0b;
+} /* amber */
+.priority-High {
+  border-left-color: #ef4444;
+} /* red */
+.priority-Critical {
+  border-left-color: #9b2c2c;
+} /* dark red */
+.small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+}
+.panel {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 10px;
+  width: 520px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+.input,
+textarea,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+}
