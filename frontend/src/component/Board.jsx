@@ -5,7 +5,7 @@ import { DragDropContext } from "@hello-pangea/dnd";
 export default function Board({ tasks, onMove, filters }) {
   const statuses = ["To Do", "In Progress", "Done"];
 
-  // filter tasks according to filters.search / filters.priority / filters.status
+  
   const filtered = tasks.filter((t) => {
     if (filters?.search) {
       const s = filters.search.toLowerCase();
@@ -39,7 +39,7 @@ export default function Board({ tasks, onMove, filters }) {
     if (!result.destination) return;
     const destCol = result.destination.droppableId;
     const taskId = result.draggableId;
-    if (destCol === result.source.droppableId) return; // same column
+    if (destCol === result.source.droppableId) return;
     onMove(taskId, destCol);
   }
 

@@ -1,4 +1,4 @@
-// backend/scripts/seed.js
+
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Task = require('../src/models/Task');
@@ -12,11 +12,10 @@ const uri = uriFromEnv || 'mongodb://localhost:27017/voice-task-tracker';
 async function run() {
   try {
     console.log('Connecting to MongoDB URI:', uri.startsWith('mongodb+srv://') ? '(mongodb+srv) [redacted]' : uri);
-    // Use recommended options
     await mongoose.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      // serverSelectionTimeoutMS: 10000, // optional: fail fast
+     
     });
     console.log('MongoDB connected');
 
@@ -33,7 +32,6 @@ async function run() {
   } catch (err) {
     console.error('Seed failed. Full error:');
     console.error(err);
-    // Helpful extra info to paste if you need help:
     console.error('--- debugging info ---');
     console.error('MONGO_URI env value present:', !!process.env.MONGO_URI);
     if (process.env.MONGO_URI) {

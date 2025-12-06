@@ -2,15 +2,6 @@ require("dotenv").config();
 const chrono = require("chrono-node");
 const { Configuration, OpenAIApi } = require("openai");
 
-/**
- * Voice parsing controller:
- * - If OPENAI_API_KEY present -> call OpenAI to extract JSON
- * - Else -> heuristic parser using chrono-node + regex
- *
- * The OpenAI call is wrapped in try/catch; if response is not strict JSON,
- * fallback to heuristic parse.
- */
-
 let openai = null;
 if (process.env.OPENAI_API_KEY) {
   const configuration = new Configuration({
@@ -28,16 +19,13 @@ function heuristicParse(text) {
     priority = "High";
   else if (/low priority|\blow\b/.test(lower)) priority = "Low";
 
-  // status heuristics
   let status = "To Do";
   if (/in progress|working on|started/.test(lower)) status = "In Progress";
   else if (/done|completed|finished/.test(lower)) status = "Done";
 
-  // date using chrono
   const chronoDate = chrono.parseDate(text);
   const dueDate = chronoDate ? chronoDate.toISOString() : null;
 
-  // naive title extraction: strip common command phrases + dates + priorities
   let title = text
     .replace(
       /(remind me to|remind me|create (a )?task to|create a task to|please|can you|could you)/gi,
@@ -71,7 +59,6 @@ exports.parseTranscript = async (req, res) => {
     if (!transcript || typeof transcript !== "string")
       return res.status(400).json({ error: "Transcript required" });
 
-    // If OpenAI available, ask it to extract structured JSON
     if (openai) {
       try {
         const prompt = buildPrompt(transcript);
@@ -91,17 +78,15 @@ exports.parseTranscript = async (req, res) => {
 
         const raw = completion.data.choices[0].message.content.trim();
 
-        // Try parse
         try {
           const parsed = JSON.parse(raw);
-          // normalize dueDate using chrono if natural language provided
+
           if (parsed.dueDate && typeof parsed.dueDate === "string") {
             const d = chrono.parseDate(parsed.dueDate);
             parsed.dueDate = d ? d.toISOString() : null;
           }
           return res.json({ transcript, parsed });
         } catch (jsonErr) {
-          // If model didn't return pure JSON, fall back to heuristics.
           console.warn("OpenAI returned non-JSON; falling back to heuristics.");
           const parsed = heuristicParse(transcript);
           return res.json({
@@ -121,7 +106,6 @@ exports.parseTranscript = async (req, res) => {
       }
     }
 
-    // No OpenAI key => heuristics
     const parsed = heuristicParse(transcript);
     return res.json({ transcript, parsed });
   } catch (err) {

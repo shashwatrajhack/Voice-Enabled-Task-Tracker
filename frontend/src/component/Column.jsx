@@ -10,7 +10,7 @@ export default function Column({ status, tasks = [] }) {
         <span className="small">{tasks.length}</span>
       </div>
       <Droppable droppableId={status}>
-        {(provided, snapshot) => (
+        {(provided) => (
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}

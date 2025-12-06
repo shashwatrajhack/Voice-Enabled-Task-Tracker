@@ -1,20 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 
-/**
- * VoiceRecorder
- * Props:
- *  - onTranscript(text: string, isFinal: boolean) => void
- *  - autoStopMs (number) => milliseconds of silence before auto-stop (default 3500)
- *
- * Behavior:
- *  - Uses Web Speech API (SpeechRecognition / webkitSpeechRecognition) if available.
- *  - Emits interim results (isFinal=false) and final results (isFinal=true).
- *  - Auto-stops after `autoStopMs` of no new speech results.
- *  - Provides a single Record/Stop button.
- */
 export default function VoiceRecorder({ onTranscript, autoStopMs = 3500 }) {
   const [listening, setListening] = useState(false);
-  const [displayText, setDisplayText] = useState(""); // shows current transcript in UI
+  const [displayText, setDisplayText] = useState("");
   const recognitionRef = useRef(null);
   const silenceTimerRef = useRef(null);
 
@@ -30,13 +18,10 @@ export default function VoiceRecorder({ onTranscript, autoStopMs = 3500 }) {
     recognition.lang = "en-US";
     recognition.interimResults = true;
     recognition.maxAlternatives = 1;
-    recognition.continuous = true; // try to keep getting results until stopped
-
-    // Build transcript as results come
+    recognition.continuous = true;
     let runningTranscript = "";
 
     recognition.onresult = (event) => {
-      // Reset silence timer on every result
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current);
       }
@@ -44,11 +29,9 @@ export default function VoiceRecorder({ onTranscript, autoStopMs = 3500 }) {
         try {
           recognition.stop();
         } catch (e) {
-          // ignore
+          console.log(e);
         }
       }, autoStopMs);
-
-      // Combine results: some results are interim, some final
       let interim = "";
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const res = event.results[i];
@@ -56,11 +39,10 @@ export default function VoiceRecorder({ onTranscript, autoStopMs = 3500 }) {
         if (res.isFinal) {
           runningTranscript =
             (runningTranscript ? runningTranscript + " " : "") + text;
-          // Send final piece
+
           setDisplayText(runningTranscript);
           onTranscript && onTranscript(runningTranscript, true);
         } else {
-          // interim
           interim += (interim ? interim + " " : "") + text;
           setDisplayText(
             (runningTranscript ? runningTranscript + " " : "") + interim
@@ -76,7 +58,7 @@ export default function VoiceRecorder({ onTranscript, autoStopMs = 3500 }) {
 
     recognition.onend = () => {
       setListening(false);
-      // send final if not sent (sometimes onresult final not triggered)
+
       if (runningTranscript) {
         onTranscript && onTranscript(runningTranscript, true);
       }
@@ -90,7 +72,7 @@ export default function VoiceRecorder({ onTranscript, autoStopMs = 3500 }) {
     recognition.onerror = (e) => {
       console.error("Speech recognition error", e);
       setListening(false);
-      // forward a final empty message to allow UI to react if needed
+
       onTranscript && onTranscript(displayText, true);
       if (silenceTimerRef.current) {
         clearTimeout(silenceTimerRef.current);
@@ -101,11 +83,12 @@ export default function VoiceRecorder({ onTranscript, autoStopMs = 3500 }) {
     recognitionRef.current = recognition;
 
     return () => {
-      // cleanup on unmount
       if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
       try {
         recognition.stop();
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+      }
       recognitionRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,8 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const voiceController = require('../controllers/voiceController');
+const voiceController = require("../controllers/voiceController");
 
-// POST { transcript: string }
-router.post('/parse', voiceController.parseTranscript);
+router.post("/parse", voiceController.parseTranscript);
 
 module.exports = router;
