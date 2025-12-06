@@ -20,6 +20,7 @@ Frontend uses **React**, backend uses **Node.js + Express**,
 and voice parsing uses **OpenAI (optional)** + heuristics for fallback.
 
 # Project Structure
+...
 Voice-Enabled-Task-Tracker/
 │
 ├── frontend/               # React application
@@ -42,6 +43,7 @@ Voice-Enabled-Task-Tracker/
 │   └── package.json
 │
 └── README.md
+...
 
 # 🛠 Tech Stack
 Frontend
